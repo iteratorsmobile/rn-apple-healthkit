@@ -200,6 +200,16 @@ RCT_EXPORT_METHOD(getHeartRateSamples:(NSDictionary *)input callback:(RCTRespons
     [self vitals_getHeartRateSamples:input callback:callback];
 }
 
+RCT_EXPORT_METHOD(getActiveEnergyBurnedOnDay:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+{
+    [self activity_getActiveEnergyBurnedOnDay:input callback:callback];
+}
+
+RCT_EXPORT_METHOD(getBasalEnergyBurnedOnDay:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+{
+    [self activity_getBasalEnergyBurnedOnDay:input callback:callback];
+}
+
 RCT_EXPORT_METHOD(getActiveEnergyBurned:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
    [self activity_getActiveEnergyBurned:input callback:callback];

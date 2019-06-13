@@ -71,4 +71,61 @@
     
 }
 
+- (void)activity_getActiveEnergyBurnedOnDay:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback
+{
+    HKQuantityType *activeEnergyType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
+    HKUnit *cal = [HKUnit kilocalorieUnit];
+    
+    NSDate *date = [RCTAppleHealthKit dateFromOptions:input key:@"date" withDefault:[NSDate date]];
+    
+    if(date == nil) {
+        callback(@[RCTMakeError(@"could not parse date from options.date", nil, nil)]);
+        return;
+    }
+    
+    [self fetchSumOfSamplesOnDayForType:activeEnergyType unit:cal day:date completion:^(double value, NSDate *startDate, NSDate *endDate, NSError *error) {
+        if (!value) {
+            NSLog(@"could not fetch calories for day: %@", error);
+            callback(@[RCTMakeError(@"could not fetch calories for day", error, nil)]);
+            return;
+        }
+        
+        NSDictionary *response = @{
+                                   @"value" : @(value),
+                                   @"date" : [RCTAppleHealthKit buildISO8601StringFromDate:date],
+                                   };
+        
+        callback(@[[NSNull null], response]);
+        
+    }];
+}
+
+- (void)activity_getBasalEnergyBurnedOnDay:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback
+{
+    HKQuantityType *basalEnergyType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBasalEnergyBurned];
+    HKUnit *cal = [HKUnit kilocalorieUnit];
+    
+    NSDate *date = [RCTAppleHealthKit dateFromOptions:input key:@"date" withDefault:[NSDate date]];
+    
+    if(date == nil) {
+        callback(@[RCTMakeError(@"could not parse date from options.date", nil, nil)]);
+        return;
+    }
+    
+    [self fetchSumOfSamplesOnDayForType:basalEnergyType unit:cal day:date completion:^(double value, NSDate *startDate, NSDate *endDate, NSError *error) {
+        if (!value) {
+            NSLog(@"could not fetch calories for day: %@", error);
+            callback(@[RCTMakeError(@"could not fetch calories for day", error, nil)]);
+            return;
+        }
+        
+        NSDictionary *response = @{
+                                   @"value" : @(value),
+                                   @"date" : [RCTAppleHealthKit buildISO8601StringFromDate:date],
+                                   };
+        
+        callback(@[[NSNull null], response]);
+    }];
+}
+
 @end
